@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
   var archive = archiver.create('zip', {});
   var output = fs.createWriteStream("./usifile.zip");
   archive.pipe(output);
-  archive.directory('./usiz/', 'usifile');
+  archive.directory('./cowz/', 'usifile');
 
   archive.finalize();
 
