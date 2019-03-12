@@ -1,6 +1,4 @@
 var express = require('express');
-var date_utils = require('date-utils');
-
 var fs = require('fs');
 var router = express.Router();
 var cowdata = {
@@ -17,16 +15,16 @@ router.get('/', function(req, res, next) {
     res.render('helo');
 });
 router.post('/', function(req, res, next) {
-    var dt = new Date();
     var cowid = req.body['cowbang'];
     var latitude = req.body['latitude'];
     var longitude = req.body['longitude'];
-    var formatted = dt.toFormat("YYYY MM DD HH24 MI SS");
-    
-    fs.appendFile('./cowz/c1.txt',latitude + ' , '+ longitude +' , '+cowid,function(err){});
+    console.log(latitude);
+    console.log(req.body['longitude']);
+
+    fs.appendFile('./cowz/c1.txt',latitude + ' , '+ longitude +' , '+cowid +'\n',function(err){});
     
     cowdata[cowid] = latitude +' , ' + longitude;
-    cowdata[cowid + 't'] = formatted;
+  
     
     res.render('helo');
     module.exports.data = cowdata;
