@@ -25,7 +25,7 @@ router.post('/', function(req, res, next) {
     
     fs.appendFile('./cowz/c1.txt',latitude + ' , '+ longitude +' , '+cowid,function(err){});
     
-    cowdata[cowid] = gpsdata;
+    cowdata[cowid] = latitude +' , ' + longitude;
     cowdata[cowid + 't'] = formatted;
     
     res.render('helo');
