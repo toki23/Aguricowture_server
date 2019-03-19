@@ -8,7 +8,7 @@ var usersRouter = require('./routes/users');
 var helo = require('./routes/helo');
 var get = require('./routes/get');
 var zip = require('./routes/zip.js');
-//var senddrone = require('./routes/senddrone.js');
+var flightdrone = require('./routes/flightdrone.js');
 var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,7 +25,7 @@ app.use('/users', usersRouter);
 app.use('/helo', helo);
 app.use('/get',get);
 app.use('/zip',zip);
-//app.use('/senddrone',senddrone);
+app.use('/flightdrone',flightdrone);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
