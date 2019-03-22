@@ -3,7 +3,7 @@ var router = express.Router();
 var helo = require('./helo');
 router.get('/', function(req, res, next) {
    res.json({
-        message:"Hello,world"
+        message
     });
 });
 module.exports = router;
