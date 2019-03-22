@@ -14,7 +14,28 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.get('/get',(req,res) => res.send('/get'));
+app.get('/get',(req,res) => {
+    const cowinformation = [
+        {
+            1 : {
+                "data" : "<%=bango1%>",
+                "time" : "<%=bango1t%>"
+            },
+            2 : {
+                "data" : "<%=bango2%>",
+                "time" : "<%=bango2t%>"
+            },
+            3 : {
+                "data" : "<%=bango3%>",
+                "time" : "<%=bango3t%>"
+            },
+            4 : {
+                "data" : "<%=bango4%>",
+                "time" : "<%=bango4t%>"
+            }
+        }
+    ];
+    res.json(cowinformation)});
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
