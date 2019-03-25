@@ -8,7 +8,7 @@ console.log(json);
 router.get('/', function(req, res, next) {
   jsonfile.readFile('./views/ahooo.json',function(err,obj){
   	if(err)console.error(err);
-  	console.obj(obj);
+  	console.log(obj);
   	res.json(obj);
   });
 });
