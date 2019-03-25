@@ -7,15 +7,16 @@ var helo = require('./helo');
 router.get('/', function(req, res, next){
   jsonfile.readFile('./views/ahooo.json',function(err,obj){
   	if(err)console.error(err);
-  	obj[0].l = helo.data[1];
-  	obj[1].l = helo.data[2];
-  	obj[2].l = helo.data[3];
-  	obj[3].l = helo.data[4];
+  	for(var i = 0;i<4;i++){
+  		obj[i].Lat = helo.data["la" +  (i+1)];
+  		obj[i].Lng = helo.data["lo" + (i+1)];
+  	}
   	console.dir(obj.name);
-  	res.json(obj);
+  	
   	jsonfile.writeFile('./views/ahooo.json', obj, function (err) {
-  		if (err) console.error(err)
-	});  	
+  		if (err) console.error(err);
+	});
+	res.json(obj);
   });
   
 

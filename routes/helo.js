@@ -2,14 +2,14 @@ var express = require('express');
 var fs = require('fs');
 var router = express.Router();
 var cowdata = {
-    '1': 'non',
-    '2': 'non',
-    '3': 'non',
-    '4': 'non',
-    '1t': 'non',
-    '2t': 'non',
-    '3t': 'non',
-    '4t': 'non', 
+    'la1': 'non',
+    'la2': 'non',
+    'la3': 'non',
+    'la4': 'non',
+    'lo1': 'non',
+    'lo2': 'non',
+    'lo3': 'non',
+    'lo4': 'non', 
 }
 router.get('/', function(req, res, next) {
     res.render('helo');
@@ -23,8 +23,9 @@ router.post('/', function(req, res, next) {
 
     fs.appendFile('./cowz/c1.txt',latitude + ' , '+ longitude +' , '+cowid +'\n',function(err){});
     
-    cowdata[cowid] = latitude +' , ' + longitude;
-  
+    cowdata["la" + cowid  ] = latitude;
+    cowdata["lo" + cowid ] = longitude;
+    console.log(cowdata["lo" + cowid] );
     
     res.render('helo');
     module.exports.data = cowdata;
