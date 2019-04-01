@@ -1,1 +1,5 @@
-[{"CowID":"1","Lat":"35.6130374","Lng":"139.7369531"},{"CowID":"2","Lat":"4234","Lng":"53"},{"CowID":"3","Lat":"non","Lng":"non"},{"CowID":"4","Lat":"non","Lng":"non"}]
+[
+	{"CowID":"1","Lat":"35.6130374","Lng":"139.7369531"},
+	{"CowID":"2","Lat":"4234","Lng":"53"},
+	{"CowID":"3","Lat":"non","Lng":"non"},
+	{"CowID":"4","Lat":"non","Lng":"non"}]

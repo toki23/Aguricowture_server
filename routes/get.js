@@ -8,8 +8,8 @@ router.get('/', function(req, res, next){
   jsonfile.readFile('./views/ahooo.json',function(err,obj){
   	if(err)console.error(err);
   	for(var i = 0;i<4;i++){
-  		obj[i].Lat = helo.data["la" +  (i+1)];
-  		obj[i].Lng = helo.data["lo" + (i+1)];
+  		obj[i].Lat = helo.datala[i+1];
+  		obj[i].Lng = helo.datalo[i+1];
   	}
   	console.dir(obj.name);
   	
