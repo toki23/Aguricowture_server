@@ -1,18 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var router = express.Router();
-var cowdatala = {
-    '1': 'non',
-    '2': 'non',
-    '3': 'non',
-    '4': 'non', 
-}
-var cowdatalo = {
-    '1': 'non',
-    '2': 'non',
-    '3': 'non',
-    '4': 'non', 
-}
+var jsonfile = require('jsonfile');
 router.get('/', function(req, res, next) {
     res.render('helo');
 });
@@ -21,14 +10,14 @@ router.post('/', function(req, res, next) {
     var latitude = req.body['latitude'];
     var longitude = req.body['longitude'];
     fs.appendFile('./cowz/c1.txt',latitude + ' , '+ longitude +' , '+cowid +'\n',function(err){});
-    
-    cowdatala[cowid] = latitude;
-    cowdatalo[cowid] = longitude;
+    jsonfile.readFile('./views/ahooo.json',function(err,obj){
+        obj[cowid-1].Lat = latitude;
+        console.log(obj[cowid-1]);
+        obj[cowid-1].Lng = longitude;
+        jsonfile.writeFile('./views/ahooo.json',obj,function(){});       
+     });
+
     
     res.render('helo');
-    module.exports.data = cowdata;
-
 });
 module.exports = router;
-module.exports.datala = cowdatala;
-module.exports.datalo = cowdatalo;
