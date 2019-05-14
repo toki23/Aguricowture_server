@@ -7,11 +7,16 @@ var bebop = require('node-bebop');
 var drone = bebop.createClient();
 var alreadyFlying = false;
 var c = new ftp();
-var r = 0;
 router.get('/:number', function(req, res, next) {
    jsonfile.readFile('./views/ahooo.json',function(err,obj){
-   		res.send(obj[req.params.number-1]);
-   		var a = "";
+   		if(req.params.namber == 1){
+      res.send("connected");
+        
+      }
+      else {
+        res.send("not connected");
+      }
+      var a = "";
    		a += "QGC WPL 120\n";
    		a += "0	0	3	2500	0.000000	30.000000	2073600.000000	0.000000	0.000000	0.000000	0.000000	1\n";
    		a += "1	0	3	178	0.000000	6.000000	-1.000000	0.000000	0.000000	0.000000	0.000000	1\n";
@@ -55,14 +60,6 @@ router.get('/:number', function(req, res, next) {
 //    		console.dir(list);
 //     	c.end();
 //     });
-    if(r == 1){
-      drone.on("GPSFixStateChanged", function(data) {
-     console.log("GPSFixStateChanged", data);
-   });
-    }
-    if(r == 0){
-   	drone.connect(function() {
-      console.log("aiueokaki");
   
 
 
@@ -77,7 +74,6 @@ router.get('/:number', function(req, res, next) {
   // drone.on("AvailabilityStateChanged", function(data) {
   //   console.log("AvailabilityStateChanged", data);
   //   if (data.AvailabilityState === 1 && !alreadyFlying) {
-      r = 1;
       //alreadyFlying = true;
       //drone.Mavlink.start("/data/ftp/internal_000/flightplans/flightPlan.mavlink", 0);
       //console.log("aa");
@@ -127,8 +123,7 @@ router.get('/:number', function(req, res, next) {
   // drone.on("unknown", function(data) {
   //   console.log("unknown", data);
   // });
-});
-}
+
 });
 
 module.exports = router;
