@@ -11,6 +11,7 @@ var zip = require('./routes/zip.js');
 var flightdrone = require('./routes/flightdrone.js');
 var deletefile = require('./routes/delete.js');
 var init = require("./routes/init.js");
+var getmovie = require("./routes/getmovie.js");
 var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,6 +31,7 @@ app.use('/zip',zip);
 app.use('/flightdrone',flightdrone);
 app.use('/delete',deletefile);
 app.use('/init',init);
+app.use('/getmovie',getmovie);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
