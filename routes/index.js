@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var helo  =  require('./helo');
 /* GET home page */
 
 router.get('/', function(req, res, next) {

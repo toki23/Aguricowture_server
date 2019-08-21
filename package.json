@@ -17,6 +17,7 @@
     "jsonfile": "^5.0.0",
     "morgan": "~1.9.0",
     "node-bebop": "^0.6.0",
+    "node-cron": "^2.0.3",
     "node-wifi": "^2.0.5",
     "request": "^2.88.0"
   },
