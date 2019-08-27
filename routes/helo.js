@@ -40,7 +40,7 @@ cron.schedule('0,30 * * * * *',async  () => {
             if(latAndlongfile.length <2)continue;
             for(let j = 1;j<latAndlongfile.length;j++){
                 console.log("cowid = " +(i+1)+" loop = "+j + " length = "+ latAndlongfile.length);
-                    sum +=  getdist(latAndlongfile[j-1].latitude,latAndlongfile[j].longitude,latAndlongfile[j-1].latitude,latAndlongfile[j].longitude);
+                    sum +=  distance(latAndlongfile[j-1].latitude,latAndlongfile[j].longitude,latAndlongfile[j-1].latitude,latAndlongfile[j].longitude);
             }
             const amountDataFile = await jsonfile.readFile(`./amount_of_movement_data/cow${i+1}.txt`);
             const  dt = new Date();
@@ -60,5 +60,13 @@ function getdist(x1,y1,x2,y2) {
     return d;
 
 };
+
+function distance(lat1, lng1, lat2, lng2) {
+    lat1 *= Math.PI / 180;
+    lng1 *= Math.PI / 180;
+    lat2 *= Math.PI / 180;
+    lng2 *= Math.PI / 180;
+    return 6371 * Math.acos(Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) + Math.sin(lat1) * Math.sin(lat2));
+}
 
 module.exports = router;
