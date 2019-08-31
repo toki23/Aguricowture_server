@@ -3,8 +3,9 @@ const fs = require('fs');
 const router = express.Router();
 const jsonfile = require('jsonfile');
 const cron = require('node-cron');
+const geolib = require('geolib');
 require("date-utils");
-
+const  dt = new Date();
 router.get("/",(req,res,next)=>{
     res.render("helo");
 });
@@ -12,8 +13,7 @@ router.get("/",(req,res,next)=>{
 router.post('/', (req, res, next) =>{
     const cowid = req.body['cowbang'];
     console.log("post cowid = "+cowid);
-    const latitude = req.body['latitude'];
-    const longitude = req.body['longitude'];
+    const latitude = req.body['latitude'] ,longitude = req.body['longitude'];
     writeNowCowData(cowid,latitude,longitude);
     writeGraphData(cowid,latitude,longitude);
     res.render('helo');
@@ -39,34 +39,27 @@ cron.schedule('0,30 * * * * *',async  () => {
             const latAndlongfile = await jsonfile.readFile(`./cow_graph_data/cow${i+1}.txt`);
             if(latAndlongfile.length <2)continue;
             for(let j = 1;j<latAndlongfile.length;j++){
-                console.log("cowid = " +(i+1)+" loop = "+j + " length = "+ latAndlongfile.length);
-                    sum +=  distance(latAndlongfile[j-1].latitude,latAndlongfile[j].longitude,latAndlongfile[j-1].latitude,latAndlongfile[j].longitude);
+                var distance = geolib.getDistance(
+                    {latitude: latAndlongfile[j-1].latitude, longitude : latAndlongfile[j-1].longitude},
+                    {latitude: latAndlongfile[j].latitude, longitude: latAndlongfile[j].longitude}
+                );
+                sum += distance;
             }
             const amountDataFile = await jsonfile.readFile(`./amount_of_movement_data/cow${i+1}.txt`);
-            const  dt = new Date();
-            const formatted = dt.toFormat("DDHH");
-            amountDataFile.push({"moving": sum,"time" :formatted});
-            await jsonfile.writeFile(`./amount_of_movement_data/cow${i+1}.txt`,amountDataFile);
+            const formatted = dt.toFormat("DD日HH時") ,detailedTime = dt.toFormat("YYMMDDHHMISS");
+            const movementAmountData7Days =  amountDataFile.filter((f)=>{
+                return f.detailedTime > detailedTime-7;
+            });
+            const Estrus= inEstrus(sum);
+            movementAmountData7Days.push({"moving": sum.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});
+            await jsonfile.writeFile(`./amount_of_movement_data/cow${i+1}.txt`,movementAmountData7Days);
             await jsonfile.writeFile(`./cow_graph_data/cow${i+1}.txt`,[]);
     }
 });
 
-function getdist(x1,y1,x2,y2) {
-
-        let a, b, d;
-        a = x1 - x2;
-        b = y1 - y2;
-        d = Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
-    return d;
-
-};
-
-function distance(lat1, lng1, lat2, lng2) {
-    lat1 *= Math.PI / 180;
-    lng1 *= Math.PI / 180;
-    lat2 *= Math.PI / 180;
-    lng2 *= Math.PI / 180;
-    return 6371 * Math.acos(Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1) + Math.sin(lat1) * Math.sin(lat2));
-}
-
 module.exports = router;
+
+function inEstrus(sum){
+    if(sum >4500)return 1;
+    else return 0;
+}

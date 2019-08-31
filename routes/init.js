@@ -12,6 +12,9 @@ router.get('/:number', function(req, res, next){
         jsonfile.writeFile('./views/ahooo.json',obj,function(){});
       }
   });
+  for(let i = 0;i<req.params.number;i++){
+    jsonfile.writeFile(`./amount_of_movement_data/cow${i+1}.txt`,[]);
+  }
   res.send(req.params.number);
 });
 module.exports = router;
