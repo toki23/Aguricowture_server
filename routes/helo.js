@@ -40,7 +40,7 @@ cron.schedule('0,30 * * * * *',async  () => {
             if(latAndlongfile.length >=2){
                 const amountData = calculationOfTravel(latAndlongfile);
                 const amountDataFile = await jsonfile.readFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`);
-                const formatted = dt.toFormat("MI分SS秒") ,detailedTime = dt.toFormat("YYMMDDHHMISS");
+                const formatted = dt.toFormat("MI分SS秒") ,detailedTime = dt.toFormat("YYMMDD");
                 const movementAmountData7Days =  amountDataFile.filter((f)=>{      //７日前のデータの削除
                     return f.detailedTime > detailedTime-7;
                 });
@@ -65,10 +65,10 @@ function inEstrus(sum){
 async function estrusDataAccumulation(cowid,amountOfMovement){
     const averageValue = await  jsonfile.readFile(`./data_folder_average_travel/cow${cowid}.txt`);
     if(averageValue.counter === 0){
-        averageValue.data/28;
-        jsonfile.writeFile(`./data_folder_average_travel/cow${cowid}.txt`,{"avaregeTravel":(averageValue/28)});
+        jsonfile.writeFile(`./data_folder_average_travel/cow${cowid}.txt`,{"avaregeTravel":(averageValue/28),ready:true});
     }else{
         averageValue.data += amountOfMovement;
+        
         averageValue.counter--;
         jsonfile.writeFile(`./data_folder_average_travel/cow${cowid}.txt`,averageValue);
     }
