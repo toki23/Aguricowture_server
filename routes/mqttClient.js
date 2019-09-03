@@ -67,9 +67,9 @@ async function writeNowCowData(cowid, latitude, longitude) {
 }
 
 async function writeGraphData(cowid, latitude, longitude) {
-  let file = await jsonfile.readFile("./cow_graph_data/cow" + cowid + ".txt");
+  let file = await jsonfile.readFile("./data_folder/cow_graph_data/cow" + cowid + ".txt");
   file.push({ latitude: latitude, longitude: longitude });
-  jsonfile.writeFile("./cow_graph_data/cow" + cowid + ".txt", file);
+  jsonfile.writeFile("./data_folder/cow_graph_data/cow" + cowid + ".txt", file);
 }
 
 module.exports = start;
