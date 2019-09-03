@@ -27,33 +27,29 @@ async function writeNowCowData(cowid,latitude,longitude){
 }
 
 async function writeGraphData(cowid,latitude,longitude){
-    let file = await jsonfile.readFile('./cow_graph_data/cow'+cowid+'.txt');
+    let file = await jsonfile.readFile('./data_folder/cow_graph_data/cow'+cowid+'.txt');
     file.push({'latitude' :latitude,'longitude' : longitude });
-    jsonfile.writeFile("./cow_graph_data/cow"+cowid+".txt",file);
+    jsonfile.writeFile("./data_folder/cow_graph_data/cow"+cowid+".txt",file);
 }
 
 cron.schedule('0,30 * * * * *',async  () => {
     console.log("start: cron");
     for(let i = 0;i<(NumberOfCows||1);i++){
             let sum = 0;
-            const latAndlongfile = await jsonfile.readFile(`./cow_graph_data/cow${i+1}.txt`);
-            if(latAndlongfile.length <2)continue;
-            for(let j = 1;j<latAndlongfile.length;j++){
-                var distance = geolib.getDistance(
-                    {latitude: latAndlongfile[j-1].latitude, longitude : latAndlongfile[j-1].longitude},
-                    {latitude: latAndlongfile[j].latitude, longitude: latAndlongfile[j].longitude}
-                );
-                sum += distance;
+            const latAndlongfile = await jsonfile.readFile(`./data_folder/cow_graph_data/cow${i+1}.txt`);
+            if(latAndlongfile.length >=2){
+                const amountData = calculationOfTravel(latAndlongfile);
+                const amountDataFile = await jsonfile.readFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`);
+                const formatted = dt.toFormat("MI分SS秒") ,detailedTime = dt.toFormat("YYMMDDHHMISS");
+                const movementAmountData7Days =  amountDataFile.filter((f)=>{      //７日前のデータの削除
+                    return f.detailedTime > detailedTime-7;
+                });
+                const Estrus= inEstrus(amountData);
+                movementAmountData7Days.push({"moving": amountData.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});
+              //  estrusDataAccumulation(i+1,amountData);
+                await jsonfile.writeFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`,movementAmountData7Days);
+                await jsonfile.writeFile(`./data_folder/cow_graph_data/cow${i+1}.txt`,[latAndlongfile[latAndlongfile.length-1]]);
             }
-            const amountDataFile = await jsonfile.readFile(`./amount_of_movement_data/cow${i+1}.txt`);
-            const formatted = dt.toFormat("MI分SS秒") ,detailedTime = dt.toFormat("YYMMDDHHMISS");
-            const movementAmountData7Days =  amountDataFile.filter((f)=>{
-                return f.detailedTime > detailedTime-7;
-            });
-            const Estrus= inEstrus(sum);
-            movementAmountData7Days.push({"moving": sum.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});
-            await jsonfile.writeFile(`./amount_of_movement_data/cow${i+1}.txt`,movementAmountData7Days);
-            await jsonfile.writeFile(`./cow_graph_data/cow${i+1}.txt`,[latAndlongfile[latAndlongfile.length-1]]);
     }
 });
 
@@ -66,9 +62,30 @@ function inEstrus(sum){
 
 
 
-// function estrusDataAccumulation(cowid,amountOfMovement){
-//     const averageValue = await jsonfile.readFile(`./average_travel/cow${cowid}.txt`);
-//     averageValue;
-//}
+function estrusDataAccumulation(cowid,amountOfMovement){
+    const averageValue = await jsonfile.readFile(`./data_folder_average_travel/cow${cowid}.txt`);
+    if(averageValue.counter === 0){
+        averageValue.data/28;
+        jsonfile.writeFile(`./data_folder_average_travel/cow${cowid}.txt`,{"avaregeTravel":(averageValue/28)});
+    }else{
+        averageValue.data += amountOfMovement;
+        averageValue.counter--;
+        jsonfile.writeFile(`./data_folder_average_travel/cow${cowid}.txt`,averageValue);
+    }
+}
 
+function calculationOfTravel(latitudeLongitudeFile){
+    return new Promise((resolve,reject) =>{
+        let sum = 0;
+        for(let j = 1;j<latitudeLongitudeFile.length;j++){
+            var distance = geolib.getDistance(
+                {latitude: latitudeLongitudeFile[j-1].latitude, longitude : latitudeLongitudeFile[j-1].longitude},
+                {latitude: latitudeLongitudeFile[j].latitude, longitude: latitudeLongitudeFile[j].longitude}
+            );
+            sum += distance;
+            console.log("calculationOfTravel: "+ sum);
+        }
+        resolve(sum);
+    });
+}
 

@@ -13,9 +13,9 @@ router.get('/:number', function(req, res, next){
       }
   });
   for(let i = 0;i<req.params.number;i++){
-    jsonfile.writeFile(`./amount_of_movement_data/cow${i+1}.txt`,[]);
-    jsonfile.writeFile(`./cow_graph_data/cow${i+1}.txt`,[]);
-    jsonfile.writeFile(`./average_travel/cow${i+1}.txt`,{"data":0,"counter":28});
+    jsonfile.writeFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`,[]);
+    jsonfile.writeFile(`./data_folder/cow_graph_data/cow${i+1}.txt`,[]);
+    jsonfile.writeFile(`./data_folder/average_travel/cow${i+1}.txt`,{"data":0,"counter":28});
     // jsonfile.writeFile(`./`)
   }
 
@@ -23,4 +23,5 @@ router.get('/:number', function(req, res, next){
   module.exports.numberOfCows = req.params.number;
 });
 
+module.exports.numberOfCows = 5;
 module.exports = router;
