@@ -7,14 +7,20 @@ router.get('/:number', function(req, res, next){
       obj = [];
       for (var i = 0; i < req.params.number; i++) {
 
-        obj.push({"CowID":i + 1,"Lat":"non","Lng":"non"});
+        obj.push({"CowID":i + 1,"Lat":1,"Lng":1});
         console.log(obj);
         jsonfile.writeFile('./views/ahooo.json',obj,function(){});
       }
   });
   for(let i = 0;i<req.params.number;i++){
     jsonfile.writeFile(`./amount_of_movement_data/cow${i+1}.txt`,[]);
+    jsonfile.writeFile(`./cow_graph_data/cow${i+1}.txt`,[]);
+    jsonfile.writeFile(`./average_travel/cow${i+1}.txt`,{"data":0,"counter":28});
+    // jsonfile.writeFile(`./`)
   }
+
   res.send(req.params.number);
+  module.exports.numberOfCows = req.params.number;
 });
+
 module.exports = router;

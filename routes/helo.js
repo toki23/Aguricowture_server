@@ -1,9 +1,9 @@
 const express = require('express');
-const fs = require('fs');
 const router = express.Router();
 const jsonfile = require('jsonfile');
 const cron = require('node-cron');
 const geolib = require('geolib');
+const NumberOfCows = require('../routes/init').NumberOfCows;
 require("date-utils");
 const  dt = new Date();
 router.get("/",(req,res,next)=>{
@@ -27,14 +27,14 @@ async function writeNowCowData(cowid,latitude,longitude){
 }
 
 async function writeGraphData(cowid,latitude,longitude){
-    let file = await jsonfile.readFile("./cow_graph_data/cow"+cowid+".txt");
-    file.push({"latitude" :latitude,"longitude" : longitude });
+    let file = await jsonfile.readFile('./cow_graph_data/cow'+cowid+'.txt');
+    file.push({'latitude' :latitude,'longitude' : longitude });
     jsonfile.writeFile("./cow_graph_data/cow"+cowid+".txt",file);
 }
 
 cron.schedule('0,30 * * * * *',async  () => {
     console.log("start: cron");
-    for(let i = 0;i<5;i++){
+    for(let i = 0;i<(NumberOfCows||1);i++){
             let sum = 0;
             const latAndlongfile = await jsonfile.readFile(`./cow_graph_data/cow${i+1}.txt`);
             if(latAndlongfile.length <2)continue;
@@ -46,14 +46,14 @@ cron.schedule('0,30 * * * * *',async  () => {
                 sum += distance;
             }
             const amountDataFile = await jsonfile.readFile(`./amount_of_movement_data/cow${i+1}.txt`);
-            const formatted = dt.toFormat("DD日HH時") ,detailedTime = dt.toFormat("YYMMDDHHMISS");
+            const formatted = dt.toFormat("MI分SS秒") ,detailedTime = dt.toFormat("YYMMDDHHMISS");
             const movementAmountData7Days =  amountDataFile.filter((f)=>{
                 return f.detailedTime > detailedTime-7;
             });
             const Estrus= inEstrus(sum);
             movementAmountData7Days.push({"moving": sum.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});
             await jsonfile.writeFile(`./amount_of_movement_data/cow${i+1}.txt`,movementAmountData7Days);
-            await jsonfile.writeFile(`./cow_graph_data/cow${i+1}.txt`,[]);
+            await jsonfile.writeFile(`./cow_graph_data/cow${i+1}.txt`,[latAndlongfile[latAndlongfile.length-1]]);
     }
 });
 
@@ -63,3 +63,12 @@ function inEstrus(sum){
     if(sum >4500)return 1;
     else return 0;
 }
+
+
+
+// function estrusDataAccumulation(cowid,amountOfMovement){
+//     const averageValue = await jsonfile.readFile(`./average_travel/cow${cowid}.txt`);
+//     averageValue;
+//}
+
+
