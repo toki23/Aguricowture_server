@@ -62,8 +62,8 @@ function inEstrus(sum){
 
 
 
-function estrusDataAccumulation(cowid,amountOfMovement){
-    const averageValue = await jsonfile.readFile(`./data_folder_average_travel/cow${cowid}.txt`);
+async function estrusDataAccumulation(cowid,amountOfMovement){
+    const averageValue = await  jsonfile.readFile(`./data_folder_average_travel/cow${cowid}.txt`);
     if(averageValue.counter === 0){
         averageValue.data/28;
         jsonfile.writeFile(`./data_folder_average_travel/cow${cowid}.txt`,{"avaregeTravel":(averageValue/28)});
