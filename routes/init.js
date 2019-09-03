@@ -22,6 +22,4 @@ router.get('/:number', function(req, res, next){
   res.send(req.params.number);
   module.exports.numberOfCows = req.params.number;
 });
-
-module.exports.numberOfCows = 5;
 module.exports = router;

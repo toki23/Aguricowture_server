@@ -34,11 +34,12 @@ async function writeGraphData(cowid,latitude,longitude){
 
 cron.schedule('0,30 * * * * *',async  () => {
     console.log("start: cron");
-    for(let i = 0;i<(NumberOfCows||1);i++){
+    for(let i = 0;i<(NumberOfCows||5);i++){
             let sum = 0;
             const latAndlongfile = await jsonfile.readFile(`./data_folder/cow_graph_data/cow${i+1}.txt`);
             if(latAndlongfile.length >=2){
-                const amountData = calculationOfTravel(latAndlongfile);
+                console.log(i);
+                const amountData = await calculationOfTravel(latAndlongfile);
                 const amountDataFile = await jsonfile.readFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`);
                 const formatted = dt.toFormat("MI分SS秒") ,detailedTime = dt.toFormat("YYMMDD");
                 const movementAmountData7Days =  amountDataFile.filter((f)=>{      //７日前のデータの削除
@@ -68,8 +69,8 @@ async function estrusDataAccumulation(cowid,amountOfMovement){
         jsonfile.writeFile(`./data_folder_average_travel/cow${cowid}.txt`,{"avaregeTravel":(averageValue/28),ready:true});
     }else{
         averageValue.data += amountOfMovement;
-        
         averageValue.counter--;
+        console.log("avaragevalue :" + averageValue.data + " " + averageValue.counter);
         jsonfile.writeFile(`./data_folder_average_travel/cow${cowid}.txt`,averageValue);
     }
 }
