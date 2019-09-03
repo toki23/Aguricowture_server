@@ -46,14 +46,14 @@ function start() {
     console.log(long);
 
     jsonfile.readFile("./views/ahooo.json", (err, data) => {
-      console.log(data);
+      // console.log(data);
       data[0].Lat = lat;
       data[0].Lng = long;
       jsonfile.writeFile("./views/ahooo.json", data);
     });
      writeGraphData(1, lat, long);
     jsonfile.readFile("./sum.json",function(err,data){
-        console.log(data);
+        // console.log(data);
         data.push({"lat":lat,"long":long});
         jsonfile.writeFile("./sum.json",data);
     });

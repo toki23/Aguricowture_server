@@ -8,7 +8,7 @@ router.get('/:number', function(req, res, next){
       for (var i = 0; i < req.params.number; i++) {
 
         obj.push({"CowID":i + 1,"Lat":1,"Lng":1});
-        console.log(obj);
+        // console.log(obj);
         jsonfile.writeFile('./views/ahooo.json',obj,function(){});
       }
   });
