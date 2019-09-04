@@ -1,1 +1,1 @@
-{"data":0,"counter":28,"ready":false}
+{"data":0,"counter":10,"ready":false}

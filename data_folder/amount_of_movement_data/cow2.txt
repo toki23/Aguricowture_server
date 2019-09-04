@@ -1,1 +1,1 @@
-[{"moving":"8836","time":"41分30秒","detailedTime":"190903","Estrus":1},{"moving":"18405","time":"41分30秒","detailedTime":"190903","Estrus":1},{"moving":"5460","time":"41分30秒","detailedTime":"190903","Estrus":1},{"moving":"8856","time":"41分30秒","detailedTime":"190903","Estrus":1},{"moving":"5672","time":"43分39秒","detailedTime":"190903","Estrus":1},{"moving":"16129","time":"43分39秒","detailedTime":"190903","Estrus":1}]
+[]
