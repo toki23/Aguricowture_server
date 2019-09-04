@@ -51,7 +51,7 @@ cron.schedule('0,30 * * * * *',async  () => {
                 //     return f.detailedTime > detailedTime-7;
                 // });
                 amountDataFile.push({"moving": amountData.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});
-                await jsonfile.writeFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`,movementAmountData7Days);
+                await jsonfile.writeFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`,amountDataFile);
             }
     }
 });
