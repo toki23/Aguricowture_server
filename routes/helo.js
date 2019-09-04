@@ -31,7 +31,7 @@ async function writeGraphData(cowid,latitude,longitude){
     jsonfile.writeFile("./data_folder/cow_graph_data/cow"+cowid+".txt",file);
 }
 
-cron.schedule('0,30 * * * * *',async  () => {
+cron.schedule('0 0 0,6,12,18 * * *',async  () => {
     console.log("start: cron");
     for(let i = 0;i<5;i++){
             const  dt = new Date();
@@ -47,9 +47,6 @@ cron.schedule('0,30 * * * * *',async  () => {
                 const formatted = dt.toFormat("MI分SS秒") ,detailedTime = dt.toFormat("YYMMDDMI");
                 estrusDataAccumulation(i+1,amountData);
                 const amountDataFile = await jsonfile.readFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`);
-                // const movementAmountData7Days =  amountDataFile.filter((f)=>{      //７日前のデータの削除
-                //     return f.detailedTime > detailedTime-7;
-                // });
                 amountDataFile.push({"moving": amountData.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});
                 await jsonfile.writeFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`,amountDataFile);
             }

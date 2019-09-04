@@ -16,7 +16,7 @@ router.get('/:number', function(req, res, next){
   for(let i = 0;i<req.params.number;i++){
     jsonfile.writeFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`,[]);
     jsonfile.writeFile(`./data_folder/cow_graph_data/cow${i+1}.txt`,[]);
-    jsonfile.writeFile(`./data_folder/average_travel/cow${i+1}.txt`,{"data":0,"counter":10,"ready":false});
+    jsonfile.writeFile(`./data_folder/average_travel/cow${i+1}.txt`,{"data":0,"counter":28,"ready":false});
     // jsonfile.writeFile(`./`)
   }
 
