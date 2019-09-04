@@ -5,14 +5,13 @@ const cron = require('node-cron');
 const geolib = require('geolib');
 const NumberOfCows = require('../routes/init').NumberOfCows;
 require("date-utils");
-const  dt = new Date();
 router.get("/",(req,res,next)=>{
     res.render("helo");
 });
 
 router.post('/', (req, res, next) =>{
     const cowid = req.body['cowbang'];
-    console.log("post cowid = "+cowid);
+    // console.log("post cowid = "+cowid);
     const latitude = req.body['latitude'] ,longitude = req.body['longitude'];
     writeNowCowData(cowid,latitude,longitude);
     writeGraphData(cowid,latitude,longitude);
@@ -34,24 +33,24 @@ async function writeGraphData(cowid,latitude,longitude){
 
 cron.schedule('0,30 * * * * *',async  () => {
     console.log("start: cron");
-    for(let i = 0;i<(NumberOfCows||5);i++){
+    for(let i = 0;i<5;i++){
+            const  dt = new Date();
             const latAndlongfile = await jsonfile.readFile(`./data_folder/cow_graph_data/cow${i+1}.txt`);
-            const currentCowCondition = await jsonfile.readFile(`./views/ahooo.json`);
             if(latAndlongfile.length >=2){
-                const amountDataFile = await jsonfile.readFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`);
+                console.log(1);
                 const amountData = await calculationOfTravel(latAndlongfile);
                 await jsonfile.writeFile(`./data_folder/cow_graph_data/cow${i+1}.txt`,[latAndlongfile[latAndlongfile.length-1]]);
-                const formatted = dt.toFormat("MI分SS秒") ,detailedTime = dt.toFormat("YYMMDD");
-                const movementAmountData7Days =  amountDataFile.filter((f)=>{      //７日前のデータの削除
-                    return f.detailedTime > detailedTime-7;
-                });
                 const Estrus=await inEstrus(amountData,i+1);
-                console.log(Estrus);
+                const currentCowCondition = await jsonfile.readFile(`./views/ahooo.json`);
                 currentCowCondition[i].Estrus = Estrus;
-                console.log(currentCowCondition);
                 jsonfile.writeFile(`./views/ahooo.json`,currentCowCondition);
-                movementAmountData7Days.push({"moving": amountData.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});
+                const formatted = dt.toFormat("MI分SS秒") ,detailedTime = dt.toFormat("YYMMDDMI");
                 estrusDataAccumulation(i+1,amountData);
+                const amountDataFile = await jsonfile.readFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`);
+                // const movementAmountData7Days =  amountDataFile.filter((f)=>{      //７日前のデータの削除
+                //     return f.detailedTime > detailedTime-7;
+                // });
+                amountDataFile.push({"moving": amountData.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});
                 await jsonfile.writeFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`,movementAmountData7Days);
             }
     }
@@ -61,9 +60,15 @@ module.exports = router;
 
 async function inEstrus(amountData,cowid){
     const averageValue = await jsonfile.readFile(`./data_folder/average_travel/cow${cowid}.txt`);
-    if(averageValue.ready){
+    console.log("cowid"+cowid+"   inEstrus : " + amountData+"     " +averageValue.avaregeTravel);
+    if(averageValue.ready && averageValue.avaregeTravel*1.5<amountData){
+        console.log("isEstrus?  :" +2 );
         return 1;
+    }else if(averageValue.ready){
+    console.log("isEstrus?  :" +1 );
+        return 2;
     }
+    console.log("isEstrus?  :" +3 );
     return 0;
 }
 
@@ -78,7 +83,7 @@ async function estrusDataAccumulation(cowid,amountOfMovement){
         }else{
             averageValue.data += amountOfMovement;
             averageValue.counter--;
-            console.log("avaragevalue :" + averageValue.data + " " + averageValue.counter);
+            // console.log("avaragevalue :" + averageValue.data + " " + averageValue.counter);
             jsonfile.writeFile(`./data_folder/average_travel/cow${cowid}.txt`,averageValue);
         }
     }

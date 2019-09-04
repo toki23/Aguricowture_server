@@ -9,8 +9,9 @@ router.get('/:number', function(req, res, next){
 
         obj.push({"CowID":i + 1,"Lat":1,"Lng":1,"Estrus":0});
         // console.log(obj);
-        jsonfile.writeFile('./views/ahooo.json',obj,function(){});
       }
+      jsonfile.writeFile('./views/ahooo.json',obj,function(){});
+
   });
   for(let i = 0;i<req.params.number;i++){
     jsonfile.writeFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`,[]);
