@@ -30,7 +30,7 @@ async function writeGraphData(cowid,latitude,longitude){
     file.push({'latitude' :latitude,'longitude' : longitude });
     jsonfile.writeFile("./data_folder/cow_graph_data/cow"+cowid+".txt",file);
 }
-
+// /'* * * * *'
 cron.schedule('0 0 0,6,12,18 * * *',async  () => {
     console.log("start: cron");
     for(let i = 0;i<5;i++){
@@ -60,13 +60,13 @@ async function inEstrus(amountData,cowid){
     console.log("cowid"+cowid+"   inEstrus : " + amountData+"     " +averageValue.avaregeTravel);
     if(averageValue.ready && averageValue.avaregeTravel*1.5<amountData){
         console.log("isEstrus?  :" +2 );
-        return 1;
+        return "1";
     }else if(averageValue.ready){
     console.log("isEstrus?  :" +1 );
-        return 2;
+        return "2";
     }
     console.log("isEstrus?  :" +3 );
-    return 0;
+    return "0";
 }
 
 
