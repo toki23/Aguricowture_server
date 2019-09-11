@@ -31,7 +31,7 @@ async function writeGraphData(cowid,latitude,longitude){
     jsonfile.writeFile("./data_folder/cow_graph_data/cow"+cowid+".txt",file);
 }
 // /'* * * * *'
-cron.schedule('* * * * *',async  () => {
+cron.schedule('*/10 * * * * *',async  () => {
     console.log("start: cron");
     for(let i = 0;i<5;i++){
             const  dt = new Date();
@@ -60,12 +60,12 @@ async function inEstrus(amountData,cowid){
     console.log("cowid"+cowid+"   inEstrus : " + amountData+"     " +averageValue.avaregeTravel);
     if(averageValue.ready && averageValue.avaregeTravel*1.5<amountData){
         console.log("isEstrus?  :" +2 );
-        return "1";
+        return "2";
     }else if(averageValue.ready){
     console.log("isEstrus?  :" +1 );
-        return "2";
+        return "1";
     }
-    console.log("isEstrus?  :" +3 );
+    console.log("isEstrus?  :" +0 );
     return "0";
 }
 
@@ -76,7 +76,7 @@ async function estrusDataAccumulation(cowid,amountOfMovement){
     console.log(averageValue);
     if(!averageValue.ready){
         if(averageValue.counter === 0){
-            jsonfile.writeFile(`./data_folder/average_travel/cow${cowid}.txt`,{"avaregeTravel":(averageValue.data/10),ready:true});
+            jsonfile.writeFile(`./data_folder/average_travel/cow${cowid}.txt`,{"avaregeTravel":(averageValue.data/28),ready:true});
         }else{
             averageValue.data += amountOfMovement;
             averageValue.counter--;
