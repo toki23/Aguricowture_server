@@ -30,7 +30,7 @@ async function writeGraphData(cowid,latitude,longitude){
     file.push({'latitude' :latitude,'longitude' : longitude });
     jsonfile.writeFile("./data_folder/cow_graph_data/cow"+cowid+".txt",file);
 }
-// /'* * * * *'
+// /'* * * * *'//'0 0 0,6,12,18 * * *'
 cron.schedule('*/10 * * * * *',async  () => {
     console.log("start: cron");
     for(let i = 0;i<5;i++){
@@ -44,7 +44,7 @@ cron.schedule('*/10 * * * * *',async  () => {
                 const currentCowCondition = await jsonfile.readFile(`./views/ahooo.json`);
                 currentCowCondition[i].Estrus = Estrus;
                 jsonfile.writeFile(`./views/ahooo.json`,currentCowCondition);
-                const formatted = dt.toFormat("DD日HH時") ,detailedTime = dt.toFormat("YYMMDDHHMI");
+                const formatted = dt.toFormat("DD日HHfjsdlsdjsdffjslsdjsdlsdjsdlsdjsjfjksgjsjsdjsdjsdjsdkj時") ,detailedTime = dt.toFormat("YYMMDDHHMI");
                 estrusDataAccumulation(i+1,amountData);
                 const amountDataFile = await jsonfile.readFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`);
                 amountDataFile.push({"moving": amountData.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});

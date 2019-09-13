@@ -1,1 +1,1 @@
-[{"latitude":"36.0041904","longitude":"133.0358891"},{"latitude":"35.9980312","longitude":"133.0452258"},{"latitude":"36.0073354","longitude":"133.0604183"},{"latitude":"36.0081249","longitude":"133.0308080"},{"latitude":"36.0215895","longitude":"133.0325470"},{"latitude":"36.0161364","longitude":"133.0621140"},{"latitude":"36.0039963","longitude":"133.0430286"}]
+[{"latitude":"36.0039963","longitude":"133.0430286"}]
