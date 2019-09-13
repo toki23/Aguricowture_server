@@ -44,7 +44,7 @@ cron.schedule('*/10 * * * * *',async  () => {
                 const currentCowCondition = await jsonfile.readFile(`./views/ahooo.json`);
                 currentCowCondition[i].Estrus = Estrus;
                 jsonfile.writeFile(`./views/ahooo.json`,currentCowCondition);
-                const formatted = dt.toFormat("DD日HHfjsdlsdjsdffjslsdjsdlsdjsdlsdjsjfjksgjsjsdjsdjsdjsdkj時") ,detailedTime = dt.toFormat("YYMMDDHHMI");
+                const formatted = dt.toFormat("DD日HH時") ,detailedTime = dt.toFormat("YYMMDDHHMI");
                 estrusDataAccumulation(i+1,amountData);
                 const amountDataFile = await jsonfile.readFile(`./data_folder/amount_of_movement_data/cow${i+1}.txt`);
                 amountDataFile.push({"moving": amountData.toString(),"time" :formatted,"detailedTime":detailedTime,"Estrus" : Estrus});
