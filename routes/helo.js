@@ -30,8 +30,8 @@ async function writeGraphData(cowid,latitude,longitude){
     file.push({'latitude' :latitude,'longitude' : longitude });
     jsonfile.writeFile("./data_folder/cow_graph_data/cow"+cowid+".txt",file);
 }
-// /'* * * * *'//'0 0 0,6,12,18 * * *'
-cron.schedule('*/10 * * * * *',async  () => {
+// /'* * * * *'//
+cron.schedule('0 0 0,6,12,18 * * *',async  () => {
     console.log("start: cron");
     for(let i = 0;i<5;i++){
             const  dt = new Date();
