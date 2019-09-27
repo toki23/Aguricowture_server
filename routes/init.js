@@ -7,7 +7,7 @@ router.get('/:number', function(req, res, next){
       obj = [];
       for (var i = 0; i < req.params.number; i++) {
 
-        obj.push({"CowID":i + 1,"Lat":1,"Lng":1,"Estrus":"0"});
+        obj.push({"CowID":i + 1,"Lat":"non","Lng":"non","Estrus":"0"});
         // console.log(obj);
       }
       jsonfile.writeFile('./views/ahooo.json',obj,function(){});
