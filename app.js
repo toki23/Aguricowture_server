@@ -19,23 +19,32 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/helo', helo);
-app.use('/get',get);
-app.use('/flightdrone',flightdrone);
-app.use('/init',init);
-app.use('/getmovie.zip',getmovie);
-app.use("/graphdata",obtainingGraphData);
+app.use('/get', get);
+app.use('/flightdrone', flightdrone);
+app.use('/init', init);
+app.use('/getmovie.zip', getmovie);
+app.use("/graphdata", obtainingGraphData);
 
 mqttClient();
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
+});
+
+// CORSを許可する
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
 // error handler
