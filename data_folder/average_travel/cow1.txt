@@ -1,1 +1,1 @@
-{"avaregeTravel":24949.821428571428,"ready":true}
+{"data":0,"counter":28,"ready":false}
