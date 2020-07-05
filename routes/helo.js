@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jsonfile = require('jsonfile');
 const cron = require('node-cron');
-const geolib = require('geolib');
+// const geolib = require('geolib');
 const NumberOfCows = require('../routes/init').NumberOfCows;
 require("date-utils");
 router.get("/",(req,res,next)=>{
@@ -90,10 +90,11 @@ function calculationOfTravel(latitudeLongitudeFile){
     return new Promise((resolve,reject) =>{
         let sum = 0;
         for(let j = 1;j<latitudeLongitudeFile.length;j++){
-            var distance = geolib.getDistance(
-                {latitude: latitudeLongitudeFile[j-1].latitude, longitude : latitudeLongitudeFile[j-1].longitude},
-                {latitude: latitudeLongitudeFile[j].latitude, longitude: latitudeLongitudeFile[j].longitude}
-            );
+            // var distance = geolib.getDistance(
+            //     {latitude: latitudeLongitudeFile[j-1].latitude, longitude : latitudeLongitudeFile[j-1].longitude},
+            //     {latitude: latitudeLongitudeFile[j].latitude, longitude: latitudeLongitudeFile[j].longitude}
+            // );
+            var distance = 0;
             sum += distance;
         }
         resolve(sum);
